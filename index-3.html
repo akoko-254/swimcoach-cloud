@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="SwimCoach Cloud"/>
+<meta name="theme-color" content="#040d1a"/>
+<title>SwimCoach Cloud — Kenya</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#040d1a;--surface:#0a1a30;--card:#0e1e37;--border:rgba(56,189,248,.15);
+  --accent:#38bdf8;--accent2:#0ea5e9;--text:#e0f4ff;--muted:#6b9bb8;--soft:#94c8e8;
+  --gold:#FFD700;--silver:#C0C0C0;--bronze:#CD7F32;
+  --ke-red:#BB0000;--ke-green:#006600;--ke-black:#000000;
+}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+/* kenya stripe top */
+.ke-stripe{height:5px;background:linear-gradient(90deg,var(--ke-black) 0%,var(--ke-black) 20%,var(--ke-red) 20%,var(--ke-red) 40%,#fff 40%,#fff 60%,var(--ke-green) 60%,var(--ke-green) 80%,var(--ke-black) 80%)}
+/* bubbles */
+.bubbles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bubble{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.09),transparent 70%);animation:rise 14s linear infinite}
+@keyframes rise{0%{transform:translateY(0) scale(1);opacity:.4}50%{opacity:.15}100%{transform:translateY(-60px) scale(1.05);opacity:.35}}
+/* header */
+header{position:sticky;top:0;z-index:100;background:rgba(4,13,26,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:11px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.header-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-text{font-size:1.25rem;font-weight:900;color:var(--text);letter-spacing:-.02em}
+.logo-text em{color:var(--accent);font-style:italic}
+.ke-badge{background:linear-gradient(135deg,var(--ke-red),var(--ke-green));color:#fff;font-size:.65rem;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:.06em;text-transform:uppercase;margin-left:4px}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+nav button{padding:7px 15px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--soft);cursor:pointer;font-size:.82rem;font-family:'Outfit',sans-serif;transition:.2s;white-space:nowrap}
+nav button:hover{border-color:var(--accent);color:var(--text)}
+nav button.active{background:rgba(56,189,248,.15);border-color:var(--accent);color:var(--text)}
+.logout-btn{margin-left:auto;padding:7px 15px;border-radius:20px;border:1px solid rgba(248,113,113,.3);background:transparent;color:#f87171;cursor:pointer;font-size:.82rem;font-family:'Outfit',sans-serif;transition:.2s}
+.logout-btn:hover{background:rgba(248,113,113,.1)}
+/* main */
+main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:28px 18px 80px}
+.tab{display:none}.tab.show{display:block}
+h2{font-size:1.35rem;font-weight:800;margin-bottom:5px}
+h3{font-size:.98rem;font-weight:700;margin-bottom:10px;color:var(--soft)}
+.sub{color:var(--muted);font-size:.86rem;margin-bottom:18px}
+.section-gap{margin-top:28px}
+/* podium */
+.podium-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.podium{background:rgba(14,30,55,.88);border:2px solid;border-radius:16px;padding:18px 14px;text-align:center;width:184px;backdrop-filter:blur(8px);transition:transform .2s}
+.podium:hover{transform:translateY(-4px)}
+.rank-badge{display:inline-block;border-radius:20px;padding:2px 11px;font-size:.73rem;font-weight:700;color:#040d1a;margin-bottom:9px}
+.avatar{width:48px;height:48px;border-radius:50%;background:rgba(56,189,248,.12);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;margin:0 auto 7px;color:var(--accent);border:2px solid rgba(56,189,248,.28)}
+.pod-name{font-weight:700;font-size:.92rem;margin-bottom:2px}
+.pod-club{font-size:.73rem;color:var(--muted);margin-bottom:7px}
+.pod-meta{font-size:.73rem;color:var(--muted);margin-top:5px}
+/* score ring */
+.ring-wrap{position:relative;margin:5px auto}
+.ring-wrap svg{display:block}
+.ring-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'DM Mono',monospace;font-weight:700}
+/* table */
+table{width:100%;border-collapse:collapse;margin-bottom:28px}
+th{text-align:left;padding:9px 13px;font-size:.74rem;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border)}
+tr{border-bottom:1px solid rgba(56,189,248,.06);transition:background .15s}
+tr:hover{background:rgba(56,189,248,.04)}
+td{padding:10px 13px;font-size:.86rem}
+.bar-bg{background:#0a1f35;border-radius:4px;height:8px;overflow:hidden;min-width:80px}
+.bar-fill{height:100%;border-radius:4px;transition:width .9s ease}
+/* stroke grid */
+.stroke-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:13px;margin-bottom:28px}
+.stroke-card{background:rgba(14,30,55,.72);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.stroke-title{font-weight:700;color:var(--accent);font-size:.8rem;margin-bottom:9px;text-transform:uppercase;letter-spacing:.06em}
+.stroke-row{display:flex;align-items:center;gap:7px;margin-bottom:6px;font-size:.74rem}
+.stroke-coach{color:var(--soft);width:90px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* filter */
+.filter-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.filter-row label{font-size:.83rem;color:var(--muted)}
+select{background:rgba(14,30,55,.9);border:1px solid rgba(56,189,248,.25);color:var(--text);padding:6px 11px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:.83rem}
+/* swim grid */
+.swim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:15px}
+.swim-card{background:rgba(10,25,50,.9);border:2px solid;border-radius:15px;padding:15px;position:relative;backdrop-filter:blur(6px)}
+.swim-rank{position:absolute;top:11px;right:11px;font-size:1rem}
+.swim-name{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.swim-coach{font-size:.76rem;color:var(--muted);margin-bottom:7px}
+.swim-region{font-size:.72rem;color:var(--ke-green);font-weight:600;margin-bottom:5px}
+.pb-list{margin-top:9px;display:flex;flex-direction:column;gap:4px}
+.pb-row{display:flex;align-items:center;gap:5px;font-size:.76rem}
+.pb-label{color:var(--muted);flex:1}
+.pb-time{font-family:'DM Mono',monospace;font-size:.77rem}
+.pb-score{font-weight:700;font-family:'DM Mono',monospace;width:26px;text-align:right}
+/* analytics */
+.analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:rgba(14,30,55,.75);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.stat-val{font-size:2rem;font-weight:900;color:var(--accent);font-family:'DM Mono',monospace;line-height:1}
+.stat-label{font-size:.78rem;color:var(--muted);margin-top:5px}
+.stat-sub{font-size:.72rem;color:var(--soft);margin-top:3px}
+/* compare */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:600px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:rgba(14,30,55,.75);border:1px solid var(--border);border-radius:14px;padding:18px}
+.compare-title{font-size:.78rem;color:var(--accent);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.compare-stat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(56,189,248,.07);font-size:.84rem}
+.compare-stat:last-child{border-bottom:none}
+.compare-win{color:#4ade80;font-weight:700}
+.compare-lose{color:var(--muted)}
+/* upload */
+.upload-section{max-width:680px;margin:0 auto}
+.upload-box{border:2px dashed rgba(56,189,248,.35);border-radius:16px;padding:42px 26px;text-align:center;cursor:pointer;transition:.2s;margin-bottom:16px;background:rgba(14,30,55,.4)}
+.upload-box:hover{border-color:var(--accent);background:rgba(14,30,55,.6)}
+.upload-icon{font-size:2.2rem;margin-bottom:9px}
+.upload-text{font-weight:700;font-size:1.05rem;color:var(--accent);margin-bottom:3px}
+.upload-hint{font-size:.8rem;color:var(--muted)}
+.upload-msg{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);border-radius:10px;padding:11px 15px;font-size:.87rem;margin-bottom:16px}
+.code-box{background:#040d1a;border:1px solid var(--border);border-radius:8px;padding:13px;font-family:'DM Mono',monospace;font-size:.75rem;color:var(--accent);white-space:pre;overflow-x:auto;margin-bottom:13px;line-height:1.75}
+.csv-guide{background:rgba(14,30,55,.6);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.csv-list{padding-left:17px;color:var(--soft);font-size:.83rem;line-height:2.1}
+/* form */
+.form-box{background:rgba(14,30,55,.6);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:9px;margin-bottom:20px;max-width:500px}
+.form-label{font-size:.76rem;color:var(--accent);text-transform:uppercase;letter-spacing:.07em}
+input[type=text]{background:rgba(4,13,26,.85);border:1px solid rgba(56,189,248,.25);color:var(--text);padding:9px 13px;border-radius:9px;font-family:'Outfit',sans-serif;font-size:.88rem;outline:none;width:100%;transition:.2s}
+input[type=text]:focus{border-color:var(--accent)}
+.add-btn{background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;border:none;border-radius:9px;padding:11px;font-weight:700;font-size:.93rem;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .2s}
+.add-btn:hover{opacity:.87}
+.coach-list{display:flex;flex-direction:column;gap:9px}
+.coach-chip{background:rgba(14,30,55,.6);border:1px solid var(--border);border-radius:12px;padding:12px 15px;display:flex;align-items:center;gap:13px}
+.chip-avatar{width:40px;height:40px;border-radius:50%;background:rgba(56,189,248,.13);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:var(--accent);border:1px solid rgba(56,189,248,.2);flex-shrink:0}
+.chip-name{font-weight:700;font-size:.88rem}
+.chip-club{font-size:.75rem;color:var(--muted)}
+/* region pills */
+.region-pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:.68rem;font-weight:700;margin-left:6px;vertical-align:middle}
+/* login */
+#login-overlay{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#040d1a 0%,#061828 50%,#040d1a 100%);display:flex;align-items:center;justify-content:center}
+.login-card{background:rgba(10,25,50,.93);border:1.5px solid rgba(56,189,248,.22);border-radius:24px;padding:40px 36px;width:100%;max-width:390px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.login-ke-flag{display:flex;gap:3px;justify-content:center;margin-bottom:16px}
+.flag-stripe{height:12px;border-radius:2px;flex:1;max-width:30px}
+.login-logo{font-size:1.55rem;font-weight:900;margin-bottom:3px}
+.login-logo em{color:var(--accent);font-style:italic}
+.login-tagline{color:var(--muted);font-size:.83rem;margin-bottom:6px}
+.login-country{color:var(--ke-red);font-size:.78rem;font-weight:700;letter-spacing:.06em;margin-bottom:28px}
+.login-form{display:flex;flex-direction:column;gap:11px;text-align:left}
+.login-form label{font-size:.76rem;color:var(--soft);text-transform:uppercase;letter-spacing:.07em}
+.login-btn{background:linear-gradient(135deg,#0ea5e9,#0369a1);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:.97rem;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:5px;transition:all .2s;letter-spacing:.02em}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(14,165,233,.35)}
+.login-err{color:#f87171;font-size:.8rem;text-align:center;min-height:17px}
+.login-hint{color:var(--muted);font-size:.76rem;margin-top:13px;padding-top:13px;border-top:1px solid var(--border)}
+.login-hint strong{color:var(--soft)}
+/* deboer sponsor strip */
+.deboer-strip{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.13);
+  border-radius:10px;
+  padding:6px 13px 6px 10px;
+  flex-shrink:0;
+}
+.deboer-label{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;line-height:1;margin-bottom:2px}
+.deboer-logo{display:flex;align-items:center;gap:6px}
+.deboer-icon{width:38px;height:38px;flex-shrink:0}
+.deboer-wordmark{font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1}
+.deboer-tagline{font-size:.58rem;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* save toast */
+#save-toast{position:fixed;bottom:22px;right:22px;z-index:500;background:rgba(74,222,128,.18);border:1px solid rgba(74,222,128,.4);color:#4ade80;border-radius:10px;padding:9px 18px;font-size:.8rem;font-weight:700;font-family:'Outfit',sans-serif;pointer-events:none;opacity:0;transform:translateY(10px);transition:all .3s}
+#save-toast.show{opacity:1;transform:translateY(0)}
+/* responsive */
+@media(max-width:600px){
+  header{padding:9px 14px;gap:10px}
+  .logo-text{font-size:1.05rem}
+  nav button{padding:5px 11px;font-size:.76rem}
+  main{padding:18px 12px 60px}
+  .podium{width:150px;padding:14px 10px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-overlay">
+  <div class="login-card">
+    <div class="login-ke-flag">
+      <div class="flag-stripe" style="background:#BB0000"></div>
+      <div class="flag-stripe" style="background:#000"></div>
+      <div class="flag-stripe" style="background:#006600"></div>
+      <div class="flag-stripe" style="background:#fff"></div>
+      <div class="flag-stripe" style="background:#BB0000"></div>
+    </div>
+    <svg width="46" height="46" viewBox="0 0 48 48" fill="none" style="display:block;margin:0 auto 10px">
+      <circle cx="24" cy="24" r="24" fill="#0ea5e9" opacity="0.16"/>
+      <path d="M6 30 Q11 25 16 30 Q21 35 26 30 Q31 25 36 30 Q41 35 46 30" stroke="#38bdf8" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M6 23 Q11 18 16 23 Q21 28 26 23 Q31 18 36 23 Q41 28 46 23" stroke="#7dd3fc" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="login-logo">SwimCoach <em>Cloud</em></div>
+    <div class="login-tagline">Coach Performance Rankings</div>
+    <div class="login-country">🇰🇪 Kenya Aquatics</div>
+    <div class="login-form">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="coach@keswim.co.ke" autocomplete="username"/>
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+      <div class="login-err" id="login-err"></div>
+      <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    </div>
+        <div class="login-hint"><strong>View only:</strong> Kenya Aquatics / swim2026</div>
+    <div style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(56,189,248,.12);display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div style="font-size:.6rem;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.12em">Official Partner</div>
+      <div style="display:flex;align-items:center;gap:9px">
+        <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
+          <circle cx="19" cy="19" r="19" fill="#0ea5e9" opacity="0.18"/>
+          <path d="M4 24 Q8 20 12 24 Q16 28 20 24 Q24 20 28 24 Q32 28 36 24" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M4 18 Q8 14 12 18 Q16 22 20 18 Q24 14 28 18 Q32 22 36 18" stroke="#7dd3fc" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="19" cy="13" r="4" fill="#38bdf8" opacity="0.55"/>
+        </svg>
+        <div>
+          <div style="font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1">deboer</div>
+          <div style="font-size:.58rem;color:rgba(255,255,255,.38);letter-spacing:.1em;text-transform:uppercase;margin-top:2px">Faster Through Science</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="save-toast">💾 Changes saved</div>
+
+<div class="ke-stripe"></div>
+<div class="bubbles" id="bubbles"></div>
+
+<header>
+  <div class="logo">
+    <svg width="32" height="32" viewBox="0 0 38 38" fill="none">
+      <circle cx="19" cy="19" r="19" fill="#0ea5e9" opacity="0.18"/>
+      <path d="M5 24 Q9 20 13 24 Q17 28 21 24 Q25 20 29 24 Q33 28 37 24" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M5 19 Q9 15 13 19 Q17 23 21 19 Q25 15 29 19 Q33 23 37 19" stroke="#7dd3fc" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <span class="logo-text">SwimCoach <em>Cloud</em> <span class="ke-badge">🇰🇪 Kenya</span></span>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:3px">
+        <span style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(14,165,233,.1));border:1px solid rgba(56,189,248,.3);border-radius:8px;padding:2px 9px;font-size:.68rem;font-weight:700;color:var(--accent);letter-spacing:.04em">
+          <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;box-shadow:0 0 6px #4ade80;animation:pulse 2s infinite"></span>
+          Swim Season 2026/2027
+        </span>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <button class="active" onclick="showTab('leaderboard',this)">🏅 Leaderboard</button>
+    <button onclick="showTab('swimmers',this)">🏊 Swimmers</button>
+    <button onclick="showTab('meets',this)">🗓 Meets</button>
+    <button onclick="showTab('analytics',this)">📊 Analytics</button>
+    <button onclick="showTab('compare',this)">⚖️ Compare</button>
+    <button onclick="showTab('schoolclub',this)">🏫 Schools & Clubs</button>
+    <button onclick="showTab('upload',this)">📤 Upload</button>
+    <button onclick="showTab('addcoach',this)">➕ New Coach</button>
+  </nav>
+  <div class="header-right">
+    <div class="deboer-strip">
+      <svg class="deboer-icon" viewBox="0 0 38 38" fill="none">
+        <circle cx="19" cy="19" r="19" fill="#0ea5e9" opacity="0.18"/>
+        <path d="M4 24 Q8 20 12 24 Q16 28 20 24 Q24 20 28 24 Q32 28 36 24" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M4 18 Q8 14 12 18 Q16 22 20 18 Q24 14 28 18 Q32 22 36 18" stroke="#7dd3fc" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="19" cy="13" r="4" fill="#38bdf8" opacity="0.6"/>
+      </svg>
+      <div>
+        <div class="deboer-label">Official Partner</div>
+        <div class="deboer-logo">
+          <div>
+            <div class="deboer-wordmark">deboer</div>
+            <div class="deboer-tagline">Faster Through Science</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">⏏ Logout</button>
+  </div>
+</header>
+
+<main>
+  <!-- LEADERBOARD -->
+  <div class="tab show" id="tab-leaderboard">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:6px">
+      <div>
+        <h2 style="margin-bottom:4px">Coaches Leaderboard</h2>
+        <p class="sub" style="margin:0">🇰🇪 Kenya Aquatics — Ranked by average swimmer score across all strokes</p>
+      </div>
+      <div id="leaderboard-admin-btns" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button onclick="printLeaderboard()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#38bdf8;border-radius:9px;padding:7px 15px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🖨 Print</button>
+        <button onclick="shareLeaderboard()" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:#4ade80;border-radius:9px;padding:7px 15px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🔗 Share</button>
+        <button onclick="seasonReset()" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:9px;padding:7px 15px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🔄 Season Reset</button>
+      </div>
+    </div>
+    <div id="reset-confirm-box" style="display:none;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:11px;padding:15px 18px;margin-bottom:16px">
+      <div style="font-weight:700;color:#f87171;margin-bottom:6px">⚠ Confirm Season Reset</div>
+      <div style="font-size:.82rem;color:var(--muted);margin-bottom:12px">This will clear <strong style="color:var(--text)">all swimmer times</strong> and <strong style="color:var(--text)">all meets</strong> to start Season 2026/2027 fresh. Coaches will be kept. This cannot be undone.</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="doSeasonReset()" style="background:#f87171;border:none;color:#fff;border-radius:8px;padding:7px 18px;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer">Yes, Reset Season</button>
+        <button onclick="document.getElementById('reset-confirm-box').style.display='none'" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:var(--muted);border-radius:8px;padding:7px 18px;font-family:'Outfit',sans-serif;font-size:.82rem;cursor:pointer">Cancel</button>
+      </div>
+    </div>
+    <div style="position:relative;margin-bottom:18px;max-width:420px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none">🔍</span>
+      <input type="text" id="coach-search" placeholder="Search coaches by name, club or region…" oninput="renderCoaches()" style="padding:9px 13px 9px 36px;width:100%;background:rgba(14,30,55,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;"/>
+    </div>
+    <div class="podium-row" id="podium-row"></div>
+    <table>
+      <thead><tr>
+        <th>Rank</th><th>Coach</th><th>Club / Region</th><th>Swimmers</th><th>Score /100</th><th style="min-width:110px">Bar</th>
+      </tr></thead>
+      <tbody id="coach-table"></tbody>
+    </table>
+    <h3 class="section-gap">Stroke Breakdown by Coach</h3>
+    <div class="stroke-grid" id="stroke-grid"></div>
+
+    <!-- PROGRESSION GRAPH -->
+    <div style="margin-top:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+        <div>
+          <h3 style="margin:0;color:var(--accent)">📈 Coach Progression</h3>
+          <p class="sub" style="margin-top:3px;margin-bottom:0">Score &amp; rank history across meets and uploads this season</p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <select id="prog-coach-filter" onchange="renderProgression()" style="padding:7px 12px;background:rgba(14,30,55,.9);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.82rem;outline:none">
+            <option value="all">All Coaches</option>
+          </select>
+          <select id="prog-mode" onchange="renderProgression()" style="padding:7px 12px;background:rgba(14,30,55,.9);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.82rem;outline:none">
+            <option value="score">Score</option>
+            <option value="rank">Rank</option>
+          </select>
+        </div>
+      </div>
+      <div style="background:rgba(14,30,55,.7);border:1px solid var(--border);border-radius:14px;padding:18px;overflow-x:auto">
+        <canvas id="prog-canvas" style="width:100%;min-height:220px;display:block"></canvas>
+        <div id="prog-empty" style="display:none;text-align:center;padding:40px 0;color:var(--muted);font-size:.88rem">No progression data yet — scores will appear here as you add swimmers and complete meets.</div>
+      </div>
+      <!-- Legend -->
+      <div id="prog-legend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"></div>
+    </div>
+  </div>
+
+  <!-- SWIMMERS -->
+  <div class="tab" id="tab-swimmers">
+    <h2>Swimmers Board</h2>
+    <div class="filter-row">
+      <label>Filter by coach:</label>
+      <select id="coach-filter" onchange="renderSwimmers()"><option value="all">All Coaches</option></select>
+      <label>Region:</label>
+      <select id="region-filter" onchange="renderSwimmers()">
+        <option value="all">All Regions</option>
+        <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option>
+        <option>Nakuru</option><option>Eldoret</option><option>Nyeri</option>
+      </select>
+    </div>
+    <div class="swim-grid" id="swim-grid"></div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="tab" id="tab-analytics">
+    <h2>Analytics</h2>
+    <p class="sub">Kenya Aquatics — performance overview</p>
+    <div class="analytics-grid" id="analytics-grid"></div>
+    <h3 class="section-gap">Top PB by Stroke</h3>
+    <table>
+      <thead><tr><th>Stroke</th><th>Distance</th><th>Swimmer</th><th>Coach</th><th>Time</th><th>Score</th></tr></thead>
+      <tbody id="top-pb-table"></tbody>
+    </table>
+    <h3>Regional Performance</h3>
+    <div class="stroke-grid" id="region-grid"></div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="tab" id="tab-compare">
+    <h2>Compare Coaches</h2>
+    <p class="sub">Head-to-head comparison of two coaches</p>
+    <div class="filter-row">
+      <label>Coach A:</label>
+      <select id="cmp-a" onchange="renderCompare()"></select>
+      <label>Coach B:</label>
+      <select id="cmp-b" onchange="renderCompare()"></select>
+    </div>
+    <div class="compare-grid" id="compare-grid"></div>
+    <h3 class="section-gap">Stroke-by-Stroke</h3>
+    <div class="stroke-grid" id="compare-stroke-grid"></div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="tab" id="tab-upload">
+    <div class="upload-section">
+      <h2>Upload Swim Times</h2>
+      <p class="sub">Upload a CSV — times are auto-scored and coaches re-ranked instantly.</p>
+      <div class="upload-box" onclick="document.getElementById('csv-input').click()">
+        <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCSV(event)"/>
+        <div class="upload-icon">📂</div>
+        <div class="upload-text">Click to upload CSV</div>
+        <div class="upload-hint">Seconds (55.30) or MM:SS.ss (1:02.10) format accepted</div>
+      </div>
+      <div class="upload-msg" id="upload-msg" style="display:none"></div>
+      <div class="csv-guide">
+        <h3>CSV Format</h3>
+        <div class="code-box">swimmer_name,coach_name,region,stroke,distance,time
+Amina Ochieng,Coach Mutua,Nairobi,Freestyle,100m,58.40
+Brian Kipchoge,Coach Waweru,Eldoret,Butterfly,100m,1:05.20
+Cynthia Auma,Coach Otieno,Kisumu,Backstroke,200m,2:35.00</div>
+        <ul class="csv-list">
+          <li><strong>swimmer_name</strong> — full name</li>
+          <li><strong>coach_name</strong> — coach's name (auto-created if new)</li>
+          <li><strong>region</strong> — Nairobi, Mombasa, Kisumu, Nakuru, Eldoret, Nyeri</li>
+          <li><strong>stroke</strong> — Freestyle, Backstroke, Breaststroke, Butterfly, IM</li>
+          <li><strong>distance</strong> — 50m, 100m, 200m, 400m, 800m, 1500m</li>
+          <li><strong>time</strong> — seconds or MM:SS.ss</li>
+        </ul>
+        <p style="color:var(--accent);font-size:.81rem;margin-top:11px">💡 Only personal bests are kept — faster times always replace slower ones.</p>
+      </div>
+
+      <!-- MANUAL SWIMMER ENTRY — FORM BASED -->
+      <div style="margin-top:30px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+          <h3 style="margin:0">✏️ Add Swimmer Manually</h3>
+          <span style="font-size:.72rem;color:var(--muted);background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.18);border-radius:7px;padding:3px 9px">Coach scores &amp; ranks update instantly</span>
+        </div>
+        <p class="sub">Fill in the fields below and click Add. You can add multiple events for the same swimmer one at a time.</p>
+
+        <div style="background:rgba(14,30,55,.8);border:1px solid rgba(56,189,248,.2);border-radius:13px;padding:18px;margin-bottom:16px">
+          <!-- Row 1: Swimmer + Coach -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px">Swimmer Name *</label>
+              <input id="ms-name" placeholder="e.g. Amina Ochieng" style="width:100%;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+            </div>
+            <div>
+              <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px">Coach *</label>
+              <select id="ms-coach" style="width:100%;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none">
+                <option value="">— Select Coach —</option>
+              </select>
+            </div>
+          </div>
+          <!-- Row 2: Region + Stroke + Distance -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px">Region</label>
+              <select id="ms-region" style="width:100%;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none">
+                <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option>
+                <option>Nakuru</option><option>Eldoret</option><option>Nyeri</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px">Stroke *</label>
+              <select id="ms-stroke" style="width:100%;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none">
+                <option>Freestyle</option><option>Backstroke</option><option>Breaststroke</option><option>Butterfly</option><option>IM</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px">Distance *</label>
+              <select id="ms-dist" style="width:100%;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none">
+                <option>50m</option><option>100m</option><option>200m</option><option>400m</option><option>800m</option><option>1500m</option>
+              </select>
+            </div>
+          </div>
+          <!-- Row 3: Time + Score preview + Button -->
+          <div style="display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:flex-end">
+            <div>
+              <label style="font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px">Time * <span style="color:rgba(255,255,255,.3)">(e.g. 58.40 or 1:02.30)</span></label>
+              <input id="ms-time" placeholder="58.40" oninput="liveScorePreview()" style="width:100%;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'DM Mono',monospace;font-size:.9rem;outline:none"/>
+            </div>
+            <div id="ms-score-badge" style="display:none;background:rgba(14,30,55,.9);border:1px solid rgba(56,189,248,.25);border-radius:9px;padding:9px 14px;text-align:center;min-width:64px">
+              <div style="font-size:.65rem;color:var(--muted)">SCORE</div>
+              <div id="ms-score-val" style="font-size:1.1rem;font-weight:800;font-family:'DM Mono',monospace;color:#38bdf8">—</div>
+            </div>
+            <button onclick="addManualSwimmer()" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);border:none;color:#fff;border-radius:9px;padding:10px 20px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;white-space:nowrap">➕ Add Swimmer</button>
+          </div>
+        </div>
+
+        <!-- Pending queue -->
+        <div id="ms-queue-wrap" style="display:none;margin-bottom:14px">
+          <div style="font-size:.78rem;font-weight:700;color:var(--accent);margin-bottom:7px">📋 Ready to import — <span id="ms-queue-count">0</span> entry(s)</div>
+          <div id="ms-queue-list" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+            <button onclick="commitManualQueue()" style="background:linear-gradient(135deg,#4ade80,#16a34a);border:none;color:#fff;border-radius:9px;padding:11px 24px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer">✅ Import All &amp; Update Rankings</button>
+            <button onclick="clearManualQueue()" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:9px;padding:11px 18px;font-family:'Outfit',sans-serif;font-size:.9rem;cursor:pointer">🗑 Clear Queue</button>
+          </div>
+        </div>
+
+        <div class="upload-msg" id="manual-upload-msg" style="display:none;margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEETS -->
+  <div class="tab" id="tab-meets">
+    <h2>Swim Meets</h2>
+    <p class="sub">🇰🇪 Kenya Aquatics — Competition calendar for Season 2026/2027</p>
+
+    <!-- Add meet form (admin only) -->
+    <div id="add-meet-form" style="background:rgba(14,30,55,.7);border:1px solid rgba(56,189,248,.2);border-radius:13px;padding:18px;margin-bottom:22px">
+      <div style="font-weight:700;font-size:.9rem;color:var(--accent);margin-bottom:13px">➕ Add New Meet</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <input id="meet-name" placeholder="Meet name" style="grid-column:1/-1;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+        <input id="meet-dates" placeholder="Dates e.g. Jun 14–15, 2026" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+        <input id="meet-location" placeholder="Location e.g. Nairobi, KEN" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <select id="meet-status" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none">
+          <option value="Upcoming">🔜 Upcoming</option>
+          <option value="Completed">✅ Completed</option>
+        </select>
+        <button onclick="addMeet()" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);border:none;color:#fff;border-radius:9px;padding:9px 22px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Add Meet</button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+      <button onclick="filterMeets('all',this)" class="meet-filter-btn active-filter" style="background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.35);color:#38bdf8;border-radius:8px;padding:6px 16px;font-family:'Outfit',sans-serif;font-size:.8rem;cursor:pointer;">All</button>
+      <button onclick="filterMeets('Completed',this)" class="meet-filter-btn" style="background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);color:#4ade80;border-radius:8px;padding:6px 16px;font-family:'Outfit',sans-serif;font-size:.8rem;cursor:pointer;opacity:.6">✅ Completed</button>
+      <button onclick="filterMeets('Upcoming',this)" class="meet-filter-btn" style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:#fbbf24;border-radius:8px;padding:6px 16px;font-family:'Outfit',sans-serif;font-size:.8rem;cursor:pointer;opacity:.6">🔜 Upcoming</button>
+    </div>
+
+    <div id="meets-list"></div>
+  </div>
+
+  <!-- SCHOOLS & CLUBS -->
+  <div class="tab" id="tab-schoolclub">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+      <div>
+        <h2>Schools &amp; Clubs</h2>
+        <p class="sub">🇰🇪 Manage swim schools and clubs registered under Kenya Aquatics.</p>
+      </div>
+      <div id="sc-admin-btns" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="printClubs()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#38bdf8;border-radius:9px;padding:7px 15px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🖨 Print</button>
+        <button onclick="shareClubs()" style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.28);color:#4ade80;border-radius:9px;padding:7px 15px;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer">🔗 Share</button>
+      </div>
+    </div>
+    <!-- Add Club/School Form (admin only) -->
+    <div id="add-club-form" style="background:rgba(14,30,55,.7);border:1px solid rgba(56,189,248,.2);border-radius:13px;padding:18px;margin-bottom:22px">
+      <div style="font-weight:700;font-size:.9rem;color:var(--accent);margin-bottom:13px">➕ Register New School / Club</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <input id="club-name" placeholder="Club / School name" style="grid-column:1/-1;padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+        <input id="club-region" placeholder="Region (e.g. Nairobi)" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+        <input id="club-contact" placeholder="Contact / Email" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+        <input id="club-pool" placeholder="Pool / Venue" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none"/>
+        <select id="club-type" style="padding:9px 13px;background:rgba(4,13,26,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:9px;font-family:'Outfit',sans-serif;font-size:.85rem;outline:none">
+          <option value="Club">🏊 Swim Club</option>
+          <option value="School">🏫 School Team</option>
+          <option value="Academy">🎓 Academy</option>
+        </select>
+        <button onclick="addClub()" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);border:none;color:#fff;border-radius:9px;padding:9px 22px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Register</button>
+      </div>
+    </div>
+    <!-- Search -->
+    <div style="position:relative;margin-bottom:16px;max-width:420px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.95rem;pointer-events:none">🔍</span>
+      <input type="text" id="club-search" placeholder="Search clubs by name or region…" oninput="renderClubs()" style="padding:9px 13px 9px 36px;width:100%;background:rgba(14,30,55,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.87rem;outline:none;"/>
+    </div>
+    <div id="clubs-list"></div>
+  </div>
+
+  <!-- ADD COACH -->
+  <div class="tab" id="tab-addcoach">
+    <div class="upload-section">
+      <h2>New Coach</h2>
+      <p class="sub">Register a new Kenyan swim coach to the platform.</p>
+      <div class="form-box">
+        <label class="form-label">Coach Name</label>
+        <input type="text" id="new-coach-name" placeholder="e.g. Coach Mutua"/>
+        <label class="form-label">Club / Swim School</label>
+        <input type="text" id="new-coach-club" placeholder="e.g. Nairobi Aquatic Club"/>
+        <label class="form-label">Phone / Contact</label>
+        <input type="text" id="new-coach-phone" placeholder="e.g. +254 712 345 678"/>
+        <label class="form-label">Email</label>
+        <input type="text" id="new-coach-email" placeholder="e.g. coach@club.co.ke"/>
+        <label class="form-label">Certification Level</label>
+        <select id="new-coach-cert">
+          <option value="None">None / Unverified</option>
+          <option value="Level 1">World Aquatics Level 1</option>
+          <option value="Level 2">World Aquatics Level 2</option>
+          <option value="Level 3">World Aquatics Level 3</option>
+          <option value="KCAA Certified">KCAA Certified</option>
+        </select>
+        <label class="form-label">License Number</label>
+        <input type="text" id="new-coach-license" placeholder="e.g. KA-2026-001"/>
+        <label class="form-label">License Expiry Date</label>
+        <input type="date" id="new-coach-expiry" style="color-scheme:dark"/>
+        <label class="form-label">Region</label>
+        <select id="new-coach-region" style="margin-bottom:4px">
+          <option>Nairobi</option><option>Mombasa</option><option>Kisumu</option>
+          <option>Nakuru</option><option>Eldoret</option><option>Nyeri</option>
+        </select>
+        <button class="add-btn" onclick="addCoach()">Add Coach</button>
+      </div>
+      <h3 class="section-gap">Registered Coaches</h3>
+      <div style="position:relative;margin-bottom:14px;max-width:500px">
+        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.95rem;pointer-events:none">🔍</span>
+        <input type="text" id="coach-search" placeholder="Search by name, club or region…" oninput="renderCoachList()" style="padding-left:36px;width:100%;background:rgba(14,30,55,.8);border:1px solid rgba(56,189,248,.25);color:var(--text);border-radius:10px;font-family:'Outfit',sans-serif;font-size:.87rem;padding-top:9px;padding-bottom:9px"/>
+      </div>
+      <div class="coach-list" id="coach-list"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+// role: 'admin' = full access | 'viewer' = read-only (no upload/add coach)
+const USERS={
+  'Akoko@ksf.co.ke':  {pass:'@swimmer254', role:'admin'},
+  'Kenya Aquatics':   {pass:'swim2026',    role:'viewer'},
+};
+
+function applyRole(role){
+  const isViewer = role === 'viewer';
+  // Hide upload & add-coach nav buttons for viewers
+  document.querySelectorAll('nav button').forEach(btn=>{
+    const txt = btn.textContent;
+    if(txt.includes('Upload') || txt.includes('New Coach')){
+      btn.style.display = isViewer ? 'none' : '';
+    }
+  });
+  // Show a read-only badge in header for viewers
+  let badge = document.getElementById('role-badge');
+  if(!badge){
+    badge = document.createElement('span');
+    badge.id = 'role-badge';
+    badge.style.cssText='font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:10px;margin-left:4px;';
+    document.querySelector('.logo').appendChild(badge);
+  }
+  if(isViewer){
+    badge.textContent='👁 View Only';
+    badge.style.background='rgba(251,191,36,.15)';
+    badge.style.color='#fbbf24';
+    badge.style.border='1px solid rgba(251,191,36,.3)';
+    badge.style.display='inline-block';
+    const f=document.getElementById('add-meet-form');if(f)f.style.display='none';
+    const lb=document.getElementById('leaderboard-admin-btns');if(lb)lb.style.display='none';
+  } else {
+    badge.textContent='🔑 Admin';
+    badge.style.background='rgba(74,222,128,.12)';
+    badge.style.color='#4ade80';
+    badge.style.border='1px solid rgba(74,222,128,.25)';
+    badge.style.display='inline-block';
+  }
+}
+
+function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value.trim();
+  const entry=USERS[u];
+  if(entry && entry.pass===p){
+    document.getElementById('login-overlay').style.display='none';
+    sessionStorage.setItem('scc_auth','1');
+    sessionStorage.setItem('scc_role', entry.role);
+    applyRole(entry.role);
+  } else {
+    document.getElementById('login-err').textContent='Invalid username or password. Check caps lock.';
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('scc_auth');
+  sessionStorage.removeItem('scc_role');
+  document.getElementById('login-overlay').style.display='flex';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+if(sessionStorage.getItem('scc_auth')){
+  document.getElementById('login-overlay').style.display='none';
+  applyRole(sessionStorage.getItem('scc_role')||'viewer');
+}
+
+// ── BUBBLES ──────────────────────────────────────────────────────────────────
+(()=>{const c=document.getElementById('bubbles');for(let i=0;i<22;i++){const b=document.createElement('span');b.className='bubble';const sz=55+Math.random()*155;Object.assign(b.style,{width:sz+'px',height:sz+'px',left:(Math.random()*100)+'%',top:(Math.random()*100)+'%',animationDelay:(Math.random()*10)+'s',animationDuration:(10+Math.random()*8)+'s',opacity:.12+Math.random()*.22});c.appendChild(b);}})();
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const STROKES=['Freestyle','Backstroke','Breaststroke','Butterfly','IM'];
+const REGIONS=['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Nyeri'];
+const REGION_COLORS={'Nairobi':'#38bdf8','Mombasa':'#f59e0b','Kisumu':'#4ade80','Nakuru':'#a78bfa','Eldoret':'#f87171','Nyeri':'#34d399'};
+
+const BENCHMARKS={'Freestyle-50m':20.91,'Freestyle-100m':46.91,'Freestyle-200m':102.0,'Freestyle-400m':220.07,'Freestyle-800m':460.06,'Freestyle-1500m':871.02,'Backstroke-50m':24.0,'Backstroke-100m':51.85,'Backstroke-200m':111.92,'Breaststroke-50m':25.95,'Breaststroke-100m':56.88,'Breaststroke-200m':126.12,'Butterfly-50m':22.27,'Butterfly-100m':49.45,'Butterfly-200m':111.5,'IM-200m':113.55,'IM-400m':243.84};
+const SLOW={'Freestyle-50m':60,'Freestyle-100m':130,'Freestyle-200m':280,'Freestyle-400m':600,'Freestyle-800m':1300,'Freestyle-1500m':2500,'Backstroke-50m':75,'Backstroke-100m':160,'Backstroke-200m':340,'Breaststroke-50m':80,'Breaststroke-100m':170,'Breaststroke-200m':370,'Butterfly-50m':72,'Butterfly-100m':158,'Butterfly-200m':350,'IM-200m':310,'IM-400m':680};
+
+let coaches=[
+  {id:'c1',name:'Coach Mutua',    club:'Nairobi Aquatic Club',  region:'Nairobi'},
+  {id:'c2',name:'Coach Waweru',   club:'Rift Valley Swim',      region:'Nakuru'},
+  {id:'c3',name:'Coach Otieno',   club:'Lake Victoria SC',      region:'Kisumu'},
+  {id:'c4',name:'Coach Karanja',  club:'Mombasa Marlins',       region:'Mombasa'},
+  {id:'c5',name:'Coach Njoroge',  club:'Highland Swim Academy', region:'Nyeri'},
+];
+let swimmers=[
+  {id:'s1', name:'Amina Ochieng',   coachId:'c1',region:'Nairobi', times:{'Freestyle-100m':58.4, 'Butterfly-100m':67.2,'Backstroke-100m':69.0}},
+  {id:'s2', name:'Brian Kipchoge',  coachId:'c1',region:'Nairobi', times:{'Freestyle-50m':28.1,  'Breaststroke-100m':78.5,'IM-200m':154.0}},
+  {id:'s3', name:'Cynthia Auma',    coachId:'c1',region:'Nairobi', times:{'Freestyle-200m':135.0,'Backstroke-50m':38.2}},
+  {id:'s4', name:'David Mwangi',    coachId:'c2',region:'Nakuru',  times:{'Freestyle-100m':61.8, 'Butterfly-50m':33.5,'Freestyle-50m':30.2}},
+  {id:'s5', name:'Esther Wanjiku',  coachId:'c2',region:'Nakuru',  times:{'Freestyle-200m':130.5,'Backstroke-200m':152.0,'IM-400m':318.0}},
+  {id:'s6', name:'Felix Omondi',    coachId:'c3',region:'Kisumu',  times:{'Breaststroke-50m':39.5,'Backstroke-50m':37.2,'Freestyle-100m':60.1}},
+  {id:'s7', name:'Grace Kamau',     coachId:'c3',region:'Kisumu',  times:{'IM-200m':163.0,'Butterfly-100m':72.8,'Freestyle-200m':138.0}},
+  {id:'s8', name:'Hassan Abdi',     coachId:'c4',region:'Mombasa', times:{'Freestyle-50m':27.4, 'Freestyle-100m':57.8,'Freestyle-200m':128.0}},
+  {id:'s9', name:'Irene Chebet',    coachId:'c4',region:'Mombasa', times:{'Backstroke-100m':67.5,'Backstroke-200m':148.5,'IM-200m':152.0}},
+  {id:'s10',name:'James Kariuki',   coachId:'c5',region:'Nyeri',   times:{'Breaststroke-100m':76.2,'Breaststroke-200m':168.0,'IM-400m':325.0}},
+  {id:'s11',name:'Kadzo Mwangi',    coachId:'c5',region:'Nyeri',   times:{'Butterfly-50m':34.1,'Butterfly-100m':74.0,'Freestyle-100m':62.5}},
+  {id:'s12',name:'Linet Cherop',    coachId:'c2',region:'Eldoret', times:{'Freestyle-400m':265.0,'Freestyle-800m':560.0,'Freestyle-1500m':1120.0}},
+];
+
+// ── SCORING ──────────────────────────────────────────────────────────────────
+function scoreTime(stroke,dist,sec){
+  const k=stroke+'-'+dist,wr=BENCHMARKS[k],slow=SLOW[k];
+  if(!wr||!slow||sec<=0)return 0;
+  const c=Math.max(wr,Math.min(slow,sec));
+  return Math.round(((slow-c)/(slow-wr))*100);
+}
+function timeToSec(str){
+  str=String(str).trim();const p=str.split(':');
+  if(p.length===3)return +p[0]*3600+ +p[1]*60+parseFloat(p[2]);
+  if(p.length===2)return +p[0]*60+parseFloat(p[1]);
+  return parseFloat(str);
+}
+function fmtTime(sec){
+  if(!sec||sec===0)return '—';
+  const m=Math.floor(sec/60),s=(sec%60).toFixed(2).padStart(5,'0');
+  return m>0?`${m}:${s}`:`${s}s`;
+}
+function swimmerScore(times){
+  const e=Object.entries(times);if(!e.length)return 0;
+  const sc=e.map(([k,v])=>{const[s,d]=k.split('-');return scoreTime(s,d,v);});
+  return Math.round(sc.reduce((a,b)=>a+b,0)/sc.length);
+}
+
+// ── WEIGHTED COACH SCORING ────────────────────────────────────────────────────
+// 50% avg swimmer score + 25% squad depth + 25% improvement rate
+function coachScore(sq){
+  if(!sq.length)return 0;
+  // Component 1: avg swimmer score (50%)
+  const avgScore=Math.round(sq.reduce((a,s)=>a+swimmerScore(s.times),0)/sq.length);
+  // Component 2: depth bonus (25%) — scaled to max 15 swimmers
+  const depthBonus=Math.min(sq.length/15,1)*100;
+  // Component 3: improvement rate (25%) — based on how many PBs have been set (non-zero times)
+  const totalPBs=sq.reduce((a,s)=>a+Object.keys(s.times).length,0);
+  const avgPBs=totalPBs/sq.length;
+  const improvBonus=Math.min(avgPBs/5,1)*100; // 5 PBs per swimmer = max
+  return Math.round(avgScore*0.5 + depthBonus*0.25 + improvBonus*0.25);
+}
+
+// ── SCORE SNAPSHOTS (progression history) ────────────────────────────────────
+// Each snapshot: {label, date, scores:{coachId: score}, ranks:{coachId: rank}}
+let SNAPSHOTS=[];
+
+function takeSnapshot(label){
+  const ranked=getRanked();
+  const scores={},ranks={};
+  ranked.forEach((c,i)=>{scores[c.id]=c.score;ranks[c.id]=i+1;});
+  SNAPSHOTS.push({label,date:new Date().toISOString(),scores,ranks});
+  // Keep only last 20 snapshots
+  if(SNAPSHOTS.length>20)SNAPSHOTS=SNAPSHOTS.slice(-20);
+  saveData();
+}
+function initials(n){return n.split(' ').map(w=>w[0]).join('');}
+const MEDAL=['#FFD700','#C0C0C0','#CD7F32'];
+function rankColor(i){return MEDAL[i]||'#4fd1ff';}
+
+// ── MEETS DATA ───────────────────────────────────────────────────────────────
+let MEETS=[];
+
+let _meetFilter='all';
+function filterMeets(f,btn){
+  _meetFilter=f;
+  document.querySelectorAll('.meet-filter-btn').forEach(b=>{
+    b.classList.remove('active-filter');
+    b.style.opacity='.6';
+  });
+  btn.classList.add('active-filter');
+  btn.style.opacity='1';
+  renderMeets();
+}
+function addMeet(){
+  const name=document.getElementById('meet-name').value.trim();
+  const dates=document.getElementById('meet-dates').value.trim();
+  const location=document.getElementById('meet-location').value.trim();
+  const status=document.getElementById('meet-status').value;
+  if(!name||!dates||!location)return alert('Please fill in all fields.');
+  MEETS.unshift({name,dates,location,status,flag:'🇰🇪'});
+  document.getElementById('meet-name').value='';
+  document.getElementById('meet-dates').value='';
+  document.getElementById('meet-location').value='';
+  // Take a snapshot so progression graph records this moment
+  takeSnapshot(name);
+  saveData();
+  renderMeets();
+  renderProgression();
+}
+function deleteMeet(i){
+  MEETS.splice(i,1);
+  saveData();
+  renderMeets();
+}
+function renderMeets(){
+  const list=_meetFilter==='all'?MEETS:MEETS.filter(m=>m.status===_meetFilter);
+  const el=document.getElementById('meets-list');
+  if(MEETS.length===0){
+    el.innerHTML=`<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:.9rem">No meets added yet. Use the form above to add your first meet.</div>`;
+    return;
+  }
+  if(list.length===0){
+    el.innerHTML=`<div style="color:var(--muted);font-size:.85rem;padding:14px 0">No meets match this filter.</div>`;
+    return;
+  }
+  el.innerHTML=list.map((m,i)=>{
+    const isComplete=m.status==='Completed';
+    const statusColor=isComplete?'#4ade80':'#fbbf24';
+    const statusBg=isComplete?'rgba(74,222,128,.1)':'rgba(251,191,36,.1)';
+    const statusBorder=isComplete?'rgba(74,222,128,.25)':'rgba(251,191,36,.25)';
+    const realIdx=MEETS.indexOf(m);
+    return `
+      <div style="display:flex;align-items:center;gap:14px;background:rgba(14,30,55,.7);border:1px solid var(--border);border-radius:13px;padding:15px 18px;margin-bottom:10px;transition:.2s" onmouseover="this.style.borderColor='rgba(56,189,248,.3)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:1.8rem;flex-shrink:0">${m.flag}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:3px">${m.name}</div>
+          <div style="font-size:.78rem;color:var(--muted)">📅 ${m.dates} &nbsp;·&nbsp; 📍 ${m.location}</div>
+        </div>
+        <span style="background:${statusBg};border:1px solid ${statusBorder};color:${statusColor};border-radius:8px;padding:4px 11px;font-size:.72rem;font-weight:700;white-space:nowrap;flex-shrink:0">${isComplete?'✅':'🔜'} ${m.status}</span>
+        <button onclick="deleteMeet(${realIdx})" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:'Outfit',sans-serif;flex-shrink:0">🗑</button>
+      </div>`;
+  }).join('');
+}
+
+// ── SVG HELPERS ──────────────────────────────────────────────────────────────
+function ringHTML(score,color,size){
+  size=size||64;const r=size/2-6,circ=2*Math.PI*r,dash=(score/100)*circ;
+  return `<div class="ring-wrap" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" style="transform:rotate(-90deg)"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#1e3a5f" stroke-width="5"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="5" stroke-dasharray="${dash} ${circ}" stroke-linecap="round"/></svg><div class="ring-label" style="font-size:${size>65?'1rem':'0.85rem'};color:${color}">${score}</div></div>`;
+}
+function barHTML(score,color){
+  return `<div class="bar-bg"><div class="bar-fill" style="width:${score}%;background:${color}"></div></div>`;
+}
+
+// ── RENDER LEADERBOARD ───────────────────────────────────────────────────────
+function getRanked(){
+  return [...coaches].map(c=>{
+    const sq=swimmers.filter(s=>s.coachId===c.id);
+    return {...c,sq,score:coachScore(sq)};
+  }).sort((a,b)=>b.score-a.score);
+}
+function renderCoaches(){
+  const q=(document.getElementById('coach-search')?.value||'').toLowerCase().trim();
+  let ranked=getRanked();
+  if(q) ranked=ranked.filter(c=>
+    c.name.toLowerCase().includes(q)||
+    c.club.toLowerCase().includes(q)||
+    c.region.toLowerCase().includes(q)
+  );
+  // podium — only show if no search active
+  document.getElementById('podium-row').innerHTML=q?'':ranked.slice(0,3).map((c,i)=>`
+    <div class="podium" style="border-color:${rankColor(i)};order:${i===0?2:i===1?1:3}">
+      <div class="rank-badge" style="background:${rankColor(i)}">#${i+1}</div>
+      <div class="avatar">${initials(c.name)}</div>
+      <div class="pod-name">${c.name}</div>
+      <div class="pod-club">${c.club}<br><span style="color:${REGION_COLORS[c.region]||'#38bdf8'};font-size:.7rem">📍${c.region}</span></div>
+      ${ringHTML(c.score,rankColor(i),70)}
+      <div class="pod-meta">${c.sq.length} swimmer${c.sq.length!==1?'s':''}</div>
+    </div>`).join('');
+  // table
+  document.getElementById('coach-table').innerHTML=ranked.length===0
+    ?`<tr><td colspan="6" style="color:var(--muted);padding:18px">No coaches match "${q}".</td></tr>`
+    :ranked.map((c,i)=>`
+    <tr>
+      <td style="font-weight:700;color:${rankColor(i)}">#${i+1}</td>
+      <td style="font-weight:600">${c.name}</td>
+      <td><span style="opacity:.75">${c.club}</span><span class="region-pill" style="background:${REGION_COLORS[c.region]||'#38bdf8'}22;color:${REGION_COLORS[c.region]||'#38bdf8'};border:1px solid ${REGION_COLORS[c.region]||'#38bdf8'}44">${c.region}</span></td>
+      <td>${c.sq.length}</td>
+      <td style="font-weight:700;color:#38bdf8;font-family:'DM Mono',monospace">${c.score}</td>
+      <td>${barHTML(c.score,rankColor(i))}</td>
+    </tr>`).join('');
+  // stroke grid
+  document.getElementById('stroke-grid').innerHTML=STROKES.map(stroke=>{
+    const rows=ranked.map(c=>{
+      const sc=c.sq.flatMap(s=>Object.entries(s.times).filter(([k])=>k.startsWith(stroke)).map(([k,v])=>{const[,d]=k.split('-');return scoreTime(stroke,d,v);}));
+      const avg=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):null;
+      return `<div class="stroke-row"><span class="stroke-coach">${c.name}</span>${avg!==null?barHTML(avg,'#38bdf8'):'<span style="opacity:.3;font-size:.71rem">no data</span>'}</div>`;
+    }).join('');
+    return `<div class="stroke-card"><div class="stroke-title">${stroke}</div>${rows}</div>`;
+  }).join('');
+}
+
+// ── RENDER SWIMMERS ──────────────────────────────────────────────────────────
+function renderSwimmers(){
+  const cf=document.getElementById('coach-filter').value;
+  const rf=document.getElementById('region-filter').value;
+  // repopulate coach filter
+  const sel=document.getElementById('coach-filter'),cur=sel.value;
+  sel.innerHTML='<option value="all">All Coaches</option>'+coaches.map(c=>`<option value="${c.id}"${c.id===cur?' selected':''}>${c.name}</option>`).join('');
+
+  let ranked=[...swimmers].map(s=>({...s,score:swimmerScore(s.times),coachName:coaches.find(c=>c.id===s.coachId)?.name||'—'})).sort((a,b)=>b.score-a.score);
+  if(cf!=='all') ranked=ranked.filter(s=>s.coachId===cf);
+  if(rf!=='all') ranked=ranked.filter(s=>s.region===rf);
+
+  document.getElementById('swim-grid').innerHTML=ranked.map((s,i)=>{
+    const color=i<3?rankColor(i):'#38bdf8';
+    const pbs=Object.entries(s.times).map(([k,v])=>{
+      const[stroke,dist]=k.split('-'),sc=scoreTime(stroke,dist,v);
+      const c=sc>75?'#4ade80':sc>45?'#fbbf24':'#f87171';
+      return `<div class="pb-row"><span class="pb-label">${stroke} ${dist}</span><span class="pb-time">${fmtTime(v)}</span><span class="pb-score" style="color:${c}">${sc}</span></div>`;
+    }).join('');
+    return `<div class="swim-card" style="border-color:${color}">
+      <div class="swim-rank">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</div>
+      <div class="avatar">${initials(s.name)}</div>
+      <div class="swim-name">${s.name}</div>
+      <div class="swim-coach">🧑‍🏫 ${s.coachName}</div>
+      <div class="swim-region" style="color:${REGION_COLORS[s.region]||'#4ade80'}">📍 ${s.region||'Kenya'}</div>
+      ${ringHTML(s.score,color,58)}
+      <div class="pb-list">${pbs}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER ANALYTICS ─────────────────────────────────────────────────────────
+function renderAnalytics(){
+  const totalSwimmers=swimmers.length;
+  const totalCoaches=coaches.length;
+  const totalPBs=swimmers.reduce((a,s)=>a+Object.keys(s.times).length,0);
+  const allScores=swimmers.map(s=>swimmerScore(s.times));
+  const avgScore=allScores.length?Math.round(allScores.reduce((a,b)=>a+b,0)/allScores.length):0;
+  const topCoach=getRanked()[0];
+  const topSwimmer=[...swimmers].map(s=>({...s,score:swimmerScore(s.times)})).sort((a,b)=>b.score-a.score)[0];
+
+  document.getElementById('analytics-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-val">${totalCoaches}</div><div class="stat-label">Registered Coaches</div><div class="stat-sub">Across ${REGIONS.length} regions</div></div>
+    <div class="stat-card"><div class="stat-val">${totalSwimmers}</div><div class="stat-label">Active Swimmers</div><div class="stat-sub">Kenya national pool</div></div>
+    <div class="stat-card"><div class="stat-val">${totalPBs}</div><div class="stat-label">Personal Bests Recorded</div><div class="stat-sub">Across all strokes</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#4ade80">${avgScore}</div><div class="stat-label">Average Score /100</div><div class="stat-sub">National average</div></div>
+    <div class="stat-card"><div class="stat-val" style="font-size:1.1rem;color:#FFD700">${topCoach?.name||'—'}</div><div class="stat-label">Top Ranked Coach</div><div class="stat-sub">${topCoach?.club||''} · Score ${topCoach?.score||0}</div></div>
+    <div class="stat-card"><div class="stat-val" style="font-size:1.1rem;color:#FFD700">${topSwimmer?.name||'—'}</div><div class="stat-label">Top Ranked Swimmer</div><div class="stat-sub">${topSwimmer?.region||''} · Score ${topSwimmer?.score||0}</div></div>`;
+
+  // top PB per stroke
+  const rows=[];
+  STROKES.forEach(stroke=>{
+    let best=null,bestSec=Infinity,bestDist='',bestSwimmer=null;
+    swimmers.forEach(s=>{
+      Object.entries(s.times).forEach(([k,v])=>{
+        if(k.startsWith(stroke)&&v<bestSec){bestSec=v;best=k;bestSwimmer=s;bestDist=k.split('-')[1];}
+      });
+    });
+    if(bestSwimmer){
+      const sc=scoreTime(stroke,bestDist,bestSec);
+      const coach=coaches.find(c=>c.id===bestSwimmer.coachId);
+      const col=sc>75?'#4ade80':sc>45?'#fbbf24':'#f87171';
+      rows.push(`<tr><td style="color:var(--accent);font-weight:600">${stroke}</td><td>${bestDist}</td><td>${bestSwimmer.name}</td><td style="opacity:.8">${coach?.name||'—'}</td><td style="font-family:'DM Mono',monospace">${fmtTime(bestSec)}</td><td style="color:${col};font-weight:700">${sc}</td></tr>`);
+    }
+  });
+  document.getElementById('top-pb-table').innerHTML=rows.join('');
+
+  // regional performance
+  document.getElementById('region-grid').innerHTML=REGIONS.map(region=>{
+    const sq=swimmers.filter(s=>s.region===region);
+    const sc=sq.length?Math.round(sq.reduce((a,s)=>a+swimmerScore(s.times),0)/sq.length):null;
+    const col=REGION_COLORS[region]||'#38bdf8';
+    return `<div class="stroke-card"><div class="stroke-title" style="color:${col}">${region}</div>
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">${sq.length} swimmer${sq.length!==1?'s':''}</div>
+      ${sc!==null?`${barHTML(sc,col)}<div style="font-size:.75rem;color:${col};margin-top:5px;font-family:'DM Mono',monospace">Avg score: ${sc}</div>`:'<span style="opacity:.3;font-size:.73rem">no data</span>'}
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER COMPARE ───────────────────────────────────────────────────────────
+function initCompare(){
+  const ranked=getRanked();
+  ['cmp-a','cmp-b'].forEach((id,i)=>{
+    document.getElementById(id).innerHTML=ranked.map((c,j)=>`<option value="${c.id}"${j===i?' selected':''}>${c.name}</option>`).join('');
+  });
+  renderCompare();
+}
+function renderCompare(){
+  const idA=document.getElementById('cmp-a').value,idB=document.getElementById('cmp-b').value;
+  const ca=coaches.find(c=>c.id===idA),cb=coaches.find(c=>c.id===idB);
+  if(!ca||!cb)return;
+  const sqA=swimmers.filter(s=>s.coachId===idA),sqB=swimmers.filter(s=>s.coachId===idB);
+  const scA=coachScore(sqA),scB=coachScore(sqB);
+
+  function statRow(label,valA,valB,higherBetter=true){
+    const aWins=higherBetter?valA>valB:valA<valB;
+    const bWins=higherBetter?valB>valA:valB<valA;
+    return `<div class="compare-stat"><span style="opacity:.75">${label}</span><span class="${aWins?'compare-win':bWins?'compare-lose':''}">${valA}</span><span class="${bWins?'compare-win':aWins?'compare-lose':''}">${valB}</span></div>`;
+  }
+
+  document.getElementById('compare-grid').innerHTML=`
+    <div class="compare-card">
+      <div class="compare-title">Coach A — ${ca.name}</div>
+      <div style="text-align:center">${ringHTML(scA,'#38bdf8',80)}</div>
+      <div style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:6px">${ca.club} · ${ca.region}</div>
+    </div>
+    <div class="compare-card">
+      <div class="compare-title">Coach B — ${cb.name}</div>
+      <div style="text-align:center">${ringHTML(scB,'#f59e0b',80)}</div>
+      <div style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:6px">${cb.club} · ${cb.region}</div>
+    </div>`;
+
+  const statsCard=`<div class="compare-card" style="grid-column:1/-1">
+    <div class="compare-title">Head-to-Head Stats</div>
+    <div class="compare-stat" style="font-weight:700;color:var(--accent)"><span>Metric</span><span>${ca.name}</span><span>${cb.name}</span></div>
+    ${statRow('Overall Score',scA,scB)}
+    ${statRow('Swimmers',sqA.length,sqB.length)}
+    ${statRow('Total PBs',sqA.reduce((a,s)=>a+Object.keys(s.times).length,0),sqB.reduce((a,s)=>a+Object.keys(s.times).length,0))}
+    ${statRow('Avg Swimmer Score',sqA.length?Math.round(sqA.reduce((a,s)=>a+swimmerScore(s.times),0)/sqA.length):0,sqB.length?Math.round(sqB.reduce((a,s)=>a+swimmerScore(s.times),0)/sqB.length):0)}
+  </div>`;
+  document.getElementById('compare-grid').innerHTML+=statsCard;
+
+  // stroke comparison
+  document.getElementById('compare-stroke-grid').innerHTML=STROKES.map(stroke=>{
+    function cScore(sq){
+      const sc=sq.flatMap(s=>Object.entries(s.times).filter(([k])=>k.startsWith(stroke)).map(([k,v])=>{const[,d]=k.split('-');return scoreTime(stroke,d,v);}));
+      return sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):null;
+    }
+    const sa=cScore(sqA),sb=cScore(sqB);
+    return `<div class="stroke-card"><div class="stroke-title">${stroke}</div>
+      <div class="stroke-row"><span class="stroke-coach" style="color:#38bdf8">${ca.name.split(' ')[1]}</span>${sa!==null?barHTML(sa,'#38bdf8'):'<span style="opacity:.3;font-size:.71rem">—</span>'}</div>
+      <div class="stroke-row"><span class="stroke-coach" style="color:#f59e0b">${cb.name.split(' ')[1]}</span>${sb!==null?barHTML(sb,'#f59e0b'):'<span style="opacity:.3;font-size:.71rem">—</span>'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER COACH LIST ────────────────────────────────────────────────────────
+function renderCoachList(){
+  const q=(document.getElementById('coach-search')?.value||'').toLowerCase().trim();
+  const filtered=coaches.filter(c=>
+    c.name.toLowerCase().includes(q)||
+    c.club.toLowerCase().includes(q)||
+    c.region.toLowerCase().includes(q)
+  );
+  document.getElementById('coach-list').innerHTML=filtered.length===0
+    ?`<div style="color:var(--muted);font-size:.85rem;padding:14px 0">No coaches match "${q}".</div>`
+    :filtered.map(c=>{
+    const sq=swimmers.filter(s=>s.coachId===c.id),sc=coachScore(sq);
+    const col=REGION_COLORS[c.region]||'#38bdf8';
+    // license expiry check
+    let expiryBadge='';
+    if(c.expiry){
+      const days=Math.ceil((new Date(c.expiry)-new Date())/(1000*60*60*24));
+      if(days<0) expiryBadge=`<span style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:6px;padding:2px 7px;font-size:.68rem;font-weight:700">⚠ Expired</span>`;
+      else if(days<=30) expiryBadge=`<span style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:#fbbf24;border-radius:6px;padding:2px 7px;font-size:.68rem;font-weight:700">⏳ Expires in ${days}d</span>`;
+      else expiryBadge=`<span style="background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:#4ade80;border-radius:6px;padding:2px 7px;font-size:.68rem;font-weight:700">✅ Valid</span>`;
+    }
+    const certBadge=c.cert&&c.cert!=='None'?`<span style="background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:#38bdf8;border-radius:6px;padding:2px 7px;font-size:.68rem">🏅 ${c.cert}</span>`:'';
+    const contactLine=(c.phone||c.email)?`<div style="font-size:.72rem;color:var(--muted);margin-top:3px">${c.phone?'📞 '+c.phone:''} ${c.email?'✉ '+c.email:''}</div>`:'';
+    const licenseLine=c.license?`<div style="font-size:.72rem;color:var(--muted)">🪪 ${c.license} ${expiryBadge}</div>`:'';
+    return `
+      <div class="coach-chip" style="display:flex;align-items:center;gap:13px" id="chip-${c.id}">
+        <div class="chip-avatar">${initials(c.name)}</div>
+        <div style="flex:1">
+          <div class="chip-name" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">${c.name} <span class="region-pill" style="background:${col}22;color:${col};border:1px solid ${col}44">${c.region}</span>${certBadge}</div>
+          <div class="chip-club">${c.club} · ${sq.length} swimmers · score: <strong style="color:#38bdf8">${sc}</strong></div>
+          ${licenseLine}${contactLine}
+        </div>
+        <div id="del-controls-${c.id}" style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <button onclick="confirmDelete('${c.id}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:8px;padding:5px 13px;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;">🗑 Delete</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── DELETE COACH ─────────────────────────────────────────────────────────────
+function confirmDelete(id){
+  const c=coaches.find(x=>x.id===id);
+  if(!c)return;
+  const sq=swimmers.filter(s=>s.coachId===id);
+  const controls=document.getElementById('del-controls-'+id);
+  controls.innerHTML=`
+    <span style="font-size:.75rem;color:#f87171;margin-right:4px">${sq.length>0?`Remove + ${sq.length} swimmer(s)?`:'Remove coach?'}</span>
+    <button onclick="deleteCoach('${id}')" style="background:#f87171;border:none;color:#fff;border-radius:7px;padding:5px 11px;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;">Yes</button>
+    <button onclick="renderCoachList()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#94c8e8;border-radius:7px;padding:5px 11px;font-size:.75rem;cursor:pointer;font-family:'Outfit',sans-serif;">No</button>`;
+}
+
+function deleteCoach(id){
+  coaches=coaches.filter(x=>x.id!==id);
+  swimmers=swimmers.filter(s=>s.coachId!==id);
+  saveData();
+  renderAll();
+  renderCoachList();
+}
+
+// ── CSV UPLOAD ───────────────────────────────────────────────────────────────
+function handleCSV(e){
+  const file=e.target.files?.[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const lines=ev.target.result.trim().split(/\r?\n/);
+      const headers=lines[0].split(',').map(h=>h.trim());
+      let added=0,updated=0;
+      lines.slice(1).forEach(line=>{
+        const vals=line.split(',').map(v=>v.trim()),row={};
+        headers.forEach((h,i)=>row[h]=vals[i]||'');
+        const name=row.swimmer_name||row.name||'';
+        const coach=row.coach_name||row.coach||'';
+        const region=row.region||'Nairobi';
+        const stroke=row.stroke||'',dist=row.distance||'',raw=row.time||row.pb||'';
+        if(!name||!stroke||!dist||!raw)return;
+        const sec=timeToSec(raw);if(sec<=0)return;
+        const key=stroke+'-'+dist;
+        let cObj=coaches.find(c=>c.name.toLowerCase()===coach.toLowerCase());
+        if(!cObj&&coach){const newId='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);cObj={id:newId,name:coach,club:'Imported',region};coaches.push(cObj);}
+        let sObj=swimmers.find(s=>s.name.toLowerCase()===name.toLowerCase());
+        if(!sObj){const newId='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);sObj={id:newId,name,coachId:cObj?.id||'',region,times:{}};swimmers.push(sObj);added++;}
+        else updated++;
+        if(!sObj.times[key]||sec<sObj.times[key])sObj.times={...sObj.times,[key]:sec};
+        if(cObj&&!sObj.coachId)sObj.coachId=cObj.id;
+      });
+      showMsg(`✅ Processed ${lines.length-1} rows — ${added} new swimmers, ${updated} updated.`);
+      saveData();
+      renderAll();
+    }catch(err){showMsg('❌ Error: '+err.message);}
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+function showMsg(t){const m=document.getElementById('upload-msg');m.textContent=t;m.style.display='block';}
+
+// ── ADD COACH ────────────────────────────────────────────────────────────────
+function addCoach(){
+  const name=document.getElementById('new-coach-name').value.trim();if(!name)return;
+  const club=document.getElementById('new-coach-club').value.trim()||'Independent';
+  const region=document.getElementById('new-coach-region').value;
+  const phone=document.getElementById('new-coach-phone').value.trim();
+  const email=document.getElementById('new-coach-email').value.trim();
+  const cert=document.getElementById('new-coach-cert').value;
+  const license=document.getElementById('new-coach-license').value.trim();
+  const expiry=document.getElementById('new-coach-expiry').value;
+  const newId='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  coaches.push({id:newId,name,club,region,phone,email,cert,license,expiry});
+  ['new-coach-name','new-coach-club','new-coach-phone','new-coach-email','new-coach-license','new-coach-expiry'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('new-coach-cert').value='None';
+  saveData();
+  renderAll();
+}
+
+// ── PRINT LEADERBOARD ────────────────────────────────────────────────────────
+function printLeaderboard(){
+  const ranked=getRanked();
+  const rows=ranked.map((c,i)=>`
+    <tr style="border-bottom:1px solid #ddd">
+      <td style="padding:8px 12px;font-weight:700">#${i+1}</td>
+      <td style="padding:8px 12px;font-weight:600">${c.name}</td>
+      <td style="padding:8px 12px">${c.club}</td>
+      <td style="padding:8px 12px">${c.region}</td>
+      <td style="padding:8px 12px">${c.sq.length}</td>
+      <td style="padding:8px 12px;font-weight:700">${c.score}/100</td>
+      <td style="padding:8px 12px">${c.cert||'—'}</td>
+    </tr>`).join('');
+  const win=window.open('','_blank');
+  win.document.write(`
+    <html><head><title>Kenya Aquatics — Coaches Leaderboard</title>
+    <style>body{font-family:Arial,sans-serif;padding:30px;color:#111}h1{color:#0284c7}table{width:100%;border-collapse:collapse}th{background:#0284c7;color:#fff;padding:9px 12px;text-align:left}tr:nth-child(even){background:#f5f9ff}@media print{button{display:none}}</style></head>
+    <body>
+      <h1>🇰🇪 Kenya Aquatics — Coaches Leaderboard</h1>
+      <p>Season 2026/2027 &nbsp;·&nbsp; Generated: ${new Date().toLocaleDateString('en-KE',{dateStyle:'long'})}</p>
+      <p>Powered by deboer — Faster Through Science</p>
+      <table><thead><tr><th>Rank</th><th>Coach</th><th>Club</th><th>Region</th><th>Swimmers</th><th>Score</th><th>Certification</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <br><button onclick="window.print()">🖨 Print this page</button>
+    </body></html>`);
+  win.document.close();
+}
+
+// ── SHARE LEADERBOARD ────────────────────────────────────────────────────────
+function shareLeaderboard(){
+  const ranked=getRanked();
+  const top5=ranked.slice(0,5).map((c,i)=>`${['🥇','🥈','🥉','4️⃣','5️⃣'][i]} ${c.name} — ${c.score}/100 (${c.club})`).join('\n');
+  const text=`🇰🇪 Kenya Aquatics — Coaches Leaderboard\nSeason 2026/2027\n\nTop Coaches:\n${top5}\n\nFaster Through Science — deboer`;
+  if(navigator.share){
+    navigator.share({title:'Kenya Aquatics Leaderboard',text}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>{
+      const btn=event.target;
+      btn.textContent='✅ Copied!';
+      setTimeout(()=>btn.textContent='🔗 Share',2000);
+    });
+  }
+}
+
+// ── SEASON RESET ─────────────────────────────────────────────────────────────
+function seasonReset(){
+  const box=document.getElementById('reset-confirm-box');
+  box.style.display=box.style.display==='none'?'block':'none';
+}
+function doSeasonReset(){
+  swimmers=swimmers.map(s=>({...s,times:{}}));
+  MEETS=[];
+  SNAPSHOTS=[];
+  document.getElementById('reset-confirm-box').style.display='none';
+  saveData();
+  renderAll();
+  alert('✅ Season reset complete. All swimmer times, meets and progression data cleared. Coaches retained.');
+}
+
+// ── TAB NAV ──────────────────────────────────────────────────────────────────
+function showTab(id,btn){
+  const role=sessionStorage.getItem('scc_role')||'viewer';
+  if(role==='viewer'&&(id==='upload'||id==='addcoach'))return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('show'));
+  document.getElementById('tab-'+id).classList.add('show');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(id==='swimmers')renderSwimmers();
+  if(id==='analytics')renderAnalytics();
+  if(id==='compare')initCompare();
+  if(id==='addcoach')renderCoachList();
+  if(id==='meets')renderMeets();
+  if(id==='upload')populateCoachDropdown();
+  if(id==='schoolclub'){renderClubs();const f=document.getElementById('add-club-form'),b=document.getElementById('sc-admin-btns');if(role==='viewer'){if(f)f.style.display='none';}}
+}
+
+// ── MANUAL SWIMMER ENTRY (FORM-BASED) ────────────────────────────────────────
+let manualQueue=[];
+
+function populateCoachDropdown(){
+  const sel=document.getElementById('ms-coach');
+  if(!sel)return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Select Coach —</option>'+
+    coaches.map(c=>`<option value="${c.id}"${c.id===cur?' selected':''}>${c.name}</option>`).join('');
+}
+
+function liveScorePreview(){
+  const stroke=document.getElementById('ms-stroke')?.value||'';
+  const dist=document.getElementById('ms-dist')?.value||'';
+  const raw=document.getElementById('ms-time')?.value||'';
+  const badge=document.getElementById('ms-score-badge');
+  const valEl=document.getElementById('ms-score-val');
+  if(!raw||!stroke||!dist){if(badge)badge.style.display='none';return;}
+  const sec=timeToSec(raw);
+  if(sec<=0){if(badge)badge.style.display='none';return;}
+  const sc=scoreTime(stroke,dist,sec);
+  const color=sc>75?'#4ade80':sc>45?'#fbbf24':sc>0?'#f87171':'#6b9bb8';
+  valEl.textContent=sc||'—';
+  valEl.style.color=color;
+  badge.style.display='block';
+}
+
+function addManualSwimmer(){
+  const name=document.getElementById('ms-name').value.trim();
+  const coachId=document.getElementById('ms-coach').value;
+  const region=document.getElementById('ms-region').value;
+  const stroke=document.getElementById('ms-stroke').value;
+  const dist=document.getElementById('ms-dist').value;
+  const rawTime=document.getElementById('ms-time').value.trim();
+  const msgEl=document.getElementById('manual-upload-msg');
+
+  // Validate
+  if(!name){msgEl.innerHTML='⚠ Please enter a swimmer name.';msgEl.style.display='block';return;}
+  if(!coachId){msgEl.innerHTML='⚠ Please select a coach.';msgEl.style.display='block';return;}
+  if(!rawTime){msgEl.innerHTML='⚠ Please enter a time.';msgEl.style.display='block';return;}
+  const sec=timeToSec(rawTime);
+  if(sec<=0){msgEl.innerHTML='⚠ Invalid time — use format like 58.40 or 1:02.30';msgEl.style.display='block';return;}
+  msgEl.style.display='none';
+
+  const sc=scoreTime(stroke,dist,sec);
+  const coachObj=coaches.find(c=>c.id===coachId);
+  manualQueue.push({name,coachId,coachName:coachObj?.name||'',region,stroke,dist,rawTime,sec,key:stroke+'-'+dist,score:sc});
+
+  // Clear time field ready for next entry, keep other fields
+  document.getElementById('ms-time').value='';
+  document.getElementById('ms-score-badge').style.display='none';
+  renderManualQueue();
+}
+
+function renderManualQueue(){
+  const wrap=document.getElementById('ms-queue-wrap');
+  const list=document.getElementById('ms-queue-list');
+  const count=document.getElementById('ms-queue-count');
+  if(!manualQueue.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  count.textContent=manualQueue.length;
+  list.innerHTML=manualQueue.map((r,i)=>{
+    const color=r.score>75?'#4ade80':r.score>45?'#fbbf24':r.score>0?'#f87171':'#6b9bb8';
+    return `<div style="display:flex;align-items:center;gap:10px;background:rgba(14,30,55,.7);border:1px solid rgba(56,189,248,.15);border-radius:9px;padding:9px 13px;font-size:.8rem">
+      <div style="flex:1">
+        <span style="font-weight:700;color:var(--text)">${r.name}</span>
+        <span style="color:var(--muted);margin:0 6px">·</span>
+        <span style="color:var(--soft)">${r.coachName}</span>
+        <span style="color:var(--muted);margin:0 6px">·</span>
+        <span style="color:var(--muted)">${r.stroke} ${r.dist}</span>
+        <span style="color:var(--muted);margin:0 6px">·</span>
+        <span style="font-family:'DM Mono',monospace">${r.rawTime}</span>
+        <span style="font-weight:700;color:${color};margin-left:8px;font-family:'DM Mono',monospace">${r.score||'—'}</span>
+      </div>
+      <button onclick="manualQueue.splice(${i},1);renderManualQueue()" style="background:rgba(248,113,113,.15);border:none;color:#f87171;border-radius:6px;padding:3px 9px;font-size:.75rem;cursor:pointer">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function clearManualQueue(){manualQueue=[];renderManualQueue();}
+
+function commitManualQueue(){
+  const msgEl=document.getElementById('manual-upload-msg');
+  if(!manualQueue.length){msgEl.innerHTML='⚠ Queue is empty — add some swimmers first.';msgEl.style.display='block';return;}
+  let added=0,updated=0;
+  let counter=0;
+  manualQueue.forEach(r=>{
+    counter++;
+    // Swimmer already exists?
+    let sObj=swimmers.find(s=>s.name.toLowerCase()===r.name.toLowerCase());
+    if(!sObj){
+      sObj={id:'s_'+Date.now()+'_'+counter,name:r.name,coachId:r.coachId,region:r.region,times:{}};
+      swimmers.push(sObj);
+      added++;
+    } else {
+      // Update coachId if not set
+      if(!sObj.coachId) sObj.coachId=r.coachId;
+      updated++;
+    }
+    // Personal best only
+    if(!sObj.times[r.key]||r.sec<sObj.times[r.key]) sObj.times={...sObj.times,[r.key]:r.sec};
+  });
+
+  // Coach score summary
+  const affectedIds=[...new Set(manualQueue.map(r=>r.coachId))];
+  const ranked=getRanked();
+  const lines=affectedIds.map(id=>{
+    const c=coaches.find(x=>x.id===id);
+    if(!c)return null;
+    const sc=coachScore(swimmers.filter(s=>s.coachId===id));
+    const rank=ranked.findIndex(x=>x.id===id)+1;
+    return `<strong style="color:#38bdf8">${c.name}</strong>: score <strong>${sc}</strong> · rank <strong>#${rank||'—'}</strong>`;
+  }).filter(Boolean).join('<br>');
+
+  msgEl.innerHTML=`✅ <strong>${added}</strong> swimmer(s) added, <strong>${updated}</strong> updated.<br>🏆 ${lines||'Rankings updated.'}`;
+  msgEl.style.display='block';
+
+  manualQueue=[];
+  renderManualQueue();
+  takeSnapshot('Upload '+(new Date().toLocaleDateString('en-KE',{month:'short',day:'numeric'})));
+  saveData();
+  renderAll();
+  renderCoaches();
+  renderProgression();
+}
+
+// ── SCHOOLS & CLUBS ──────────────────────────────────────────────────────────
+let CLUBS=[];
+
+function addClub(){
+  const name=document.getElementById('club-name').value.trim();
+  const region=document.getElementById('club-region').value.trim()||'Nairobi';
+  const contact=document.getElementById('club-contact').value.trim();
+  const pool=document.getElementById('club-pool').value.trim();
+  const type=document.getElementById('club-type').value;
+  if(!name)return alert('Please enter a club/school name.');
+  const newId='cl'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  CLUBS.push({id:newId,name,region,contact,pool,type});
+  document.getElementById('club-name').value='';
+  document.getElementById('club-region').value='';
+  document.getElementById('club-contact').value='';
+  document.getElementById('club-pool').value='';
+  saveData();
+  renderClubs();
+}
+
+function deleteClub(id){
+  CLUBS=CLUBS.filter(c=>c.id!==id);
+  saveData();
+  renderClubs();
+}
+
+function renderClubs(){
+  const q=(document.getElementById('club-search')?.value||'').toLowerCase().trim();
+  let list=CLUBS.filter(c=>
+    c.name.toLowerCase().includes(q)||
+    (c.region||'').toLowerCase().includes(q)
+  );
+  const el=document.getElementById('clubs-list');
+  if(!el)return;
+  if(CLUBS.length===0){
+    el.innerHTML=`<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:.9rem">No schools or clubs registered yet. Use the form above to add one.</div>`;
+    return;
+  }
+  if(list.length===0){
+    el.innerHTML=`<div style="color:var(--muted);font-size:.85rem;padding:14px 0">No clubs match your search.</div>`;
+    return;
+  }
+  const TYPE_ICON={'Club':'🏊','School':'🏫','Academy':'🎓'};
+  const role=sessionStorage.getItem('scc_role')||'viewer';
+  el.innerHTML=list.map(c=>{
+    const col=REGION_COLORS[c.region]||'#38bdf8';
+    // Count coaches and swimmers in this club
+    const clubCoaches=coaches.filter(ch=>ch.club===c.name);
+    const clubSwimmers=swimmers.filter(s=>clubCoaches.some(ch=>ch.id===s.coachId));
+    const deleteBtn=role==='admin'?`<button onclick="deleteClub('${c.id}')" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;font-family:'Outfit',sans-serif;flex-shrink:0">🗑</button>`:'';
+    return `
+      <div style="display:flex;align-items:center;gap:14px;background:rgba(14,30,55,.7);border:1px solid var(--border);border-radius:13px;padding:15px 18px;margin-bottom:10px;transition:.2s" onmouseover="this.style.borderColor='rgba(56,189,248,.3)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:1.8rem;flex-shrink:0">${TYPE_ICON[c.type]||'🏊'}</div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:.95rem;color:var(--text);margin-bottom:3px">${c.name} <span style="font-size:.7rem;font-weight:600;background:${col}22;color:${col};border:1px solid ${col}44;border-radius:6px;padding:2px 8px;margin-left:4px">${c.type}</span></div>
+          <div style="font-size:.78rem;color:var(--muted)">📍 ${c.region||'—'} ${c.pool?'&nbsp;·&nbsp; 🏟 '+c.pool:''}</div>
+          <div style="font-size:.75rem;color:var(--soft);margin-top:2px">👥 ${clubCoaches.length} coach(es) · 🏊 ${clubSwimmers.length} swimmer(s) ${c.contact?'&nbsp;·&nbsp; ✉ '+c.contact:''}</div>
+        </div>
+        ${deleteBtn}
+      </div>`;
+  }).join('');
+}
+
+function printClubs(){
+  const rows=CLUBS.map(c=>`
+    <tr style="border-bottom:1px solid #ddd">
+      <td style="padding:8px 12px">${c.type}</td>
+      <td style="padding:8px 12px;font-weight:600">${c.name}</td>
+      <td style="padding:8px 12px">${c.region||'—'}</td>
+      <td style="padding:8px 12px">${c.pool||'—'}</td>
+      <td style="padding:8px 12px">${c.contact||'—'}</td>
+    </tr>`).join('');
+  const win=window.open('','_blank');
+  win.document.write(`<html><head><title>Kenya Aquatics — Schools & Clubs</title>
+    <style>body{font-family:Arial,sans-serif;padding:30px;color:#111}h1{color:#0284c7}table{width:100%;border-collapse:collapse}th{background:#0284c7;color:#fff;padding:9px 12px;text-align:left}tr:nth-child(even){background:#f5f9ff}@media print{button{display:none}}</style></head>
+    <body><h1>🇰🇪 Kenya Aquatics — Schools &amp; Clubs</h1>
+    <p>Season 2026/2027 · Generated: ${new Date().toLocaleDateString('en-KE',{dateStyle:'long'})}</p>
+    <p>Powered by deboer — Faster Through Science</p>
+    <table><thead><tr><th>Type</th><th>Name</th><th>Region</th><th>Pool/Venue</th><th>Contact</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <br><button onclick="window.print()">🖨 Print</button></body></html>`);
+  win.document.close();
+}
+
+function shareClubs(){
+  const lines=CLUBS.slice(0,8).map(c=>`${c.type==='School'?'🏫':c.type==='Academy'?'🎓':'🏊'} ${c.name} — ${c.region}`).join('\n');
+  const text=`🇰🇪 Kenya Aquatics — Schools & Clubs\nSeason 2026/2027\n\n${lines}\n\nFaster Through Science — deboer`;
+  if(navigator.share){navigator.share({title:'Kenya Aquatics Schools & Clubs',text}).catch(()=>{});}
+  else{navigator.clipboard.writeText(text).then(()=>{const btn=event.target;btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='🔗 Share',2000);});}
+}
+
+// ── LOCALSTORAGE PERSISTENCE ─────────────────────────────────────────────────
+const STORAGE_KEY='scc_data_v2';
+
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({coaches,swimmers,MEETS,CLUBS,SNAPSHOTS}));
+    const t=document.getElementById('save-toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2000);
+  }catch(e){console.warn('Save failed:',e);}
+}
+
+function loadData(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return false;
+    const d=JSON.parse(raw);
+    if(Array.isArray(d.coaches)&&d.coaches.length>0) coaches=d.coaches;
+    if(Array.isArray(d.swimmers)&&d.swimmers.length>=0) swimmers=d.swimmers;
+    if(Array.isArray(d.MEETS)) MEETS=d.MEETS;
+    if(Array.isArray(d.CLUBS)) CLUBS=d.CLUBS;
+    if(Array.isArray(d.SNAPSHOTS)) SNAPSHOTS=d.SNAPSHOTS;
+    return true;
+  }catch(e){
+    console.warn('Load failed — resetting storage:',e);
+    localStorage.removeItem(STORAGE_KEY);
+    return false;
+  }
+}
+
+// ── PROGRESSION GRAPH ────────────────────────────────────────────────────────
+const PROG_COLORS=['#38bdf8','#4ade80','#f59e0b','#a78bfa','#f87171','#34d399','#fb923c','#e879f9'];
+
+function populateProgCoachFilter(){
+  const sel=document.getElementById('prog-coach-filter');
+  if(!sel)return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="all">All Coaches</option>'+
+    coaches.map(c=>`<option value="${c.id}"${c.id===cur?' selected':''}>${c.name}</option>`).join('');
+}
+
+function renderProgression(){
+  populateProgCoachFilter();
+  const canvas=document.getElementById('prog-canvas');
+  const empty=document.getElementById('prog-empty');
+  const legend=document.getElementById('prog-legend');
+  if(!canvas)return;
+  const allSnaps=[...SNAPSHOTS];
+  if(allSnaps.length===0){
+    const ranked=getRanked();
+    const scores={},ranks={};
+    ranked.forEach((c,i)=>{scores[c.id]=c.score;ranks[c.id]=i+1;});
+    allSnaps.push({label:'Now',date:new Date().toISOString(),scores,ranks});
+  }
+  if(allSnaps.length===1) allSnaps.unshift({...allSnaps[0],label:'Season Start'});
+  const mode=document.getElementById('prog-mode')?.value||'score';
+  const filterCoach=document.getElementById('prog-coach-filter')?.value||'all';
+  const visibleCoaches=filterCoach==='all'?coaches:coaches.filter(c=>c.id===filterCoach);
+  if(!visibleCoaches.length){canvas.style.display='none';empty.style.display='block';legend.innerHTML='';return;}
+  canvas.style.display='block';empty.style.display='none';
+  const W=Math.max(canvas.parentElement.clientWidth-36,300);
+  const H=240;
+  canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const PAD={top:20,right:20,bottom:48,left:44};
+  const gW=W-PAD.left-PAD.right;
+  const gH=H-PAD.top-PAD.bottom;
+  const yMin=mode==='rank'?1:0;
+  const yMax=mode==='rank'?Math.max(coaches.length,5):100;
+  // Grid
+  for(let i=0;i<=5;i++){
+    const y=PAD.top+gH*(i/5);
+    ctx.strokeStyle='rgba(56,189,248,.08)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(PAD.left,y);ctx.lineTo(PAD.left+gW,y);ctx.stroke();
+    const val=mode==='rank'?Math.round(yMin+(yMax-yMin)*(1-i/5)):Math.round((1-i/5)*100);
+    ctx.fillStyle='rgba(148,200,232,.5)';ctx.font='10px Outfit,sans-serif';ctx.textAlign='right';
+    ctx.fillText(mode==='rank'?'#'+val:val,PAD.left-4,y+4);
+  }
+  // X labels
+  ctx.fillStyle='rgba(148,200,232,.6)';ctx.font='10px Outfit,sans-serif';ctx.textAlign='center';
+  allSnaps.forEach((s,i)=>{
+    const x=PAD.left+gW*(allSnaps.length<2?0.5:i/(allSnaps.length-1));
+    const lbl=s.label.length>13?s.label.slice(0,12)+'…':s.label;
+    ctx.fillText(lbl,x,H-PAD.bottom+16);
+    ctx.strokeStyle='rgba(56,189,248,.15)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x,PAD.top+gH);ctx.lineTo(x,PAD.top+gH+4);ctx.stroke();
+  });
+  // Lines per coach
+  visibleCoaches.forEach((c,ci)=>{
+    const color=PROG_COLORS[ci%PROG_COLORS.length];
+    const points=allSnaps.map((s,i)=>{
+      const val=mode==='rank'?(s.ranks?.[c.id]??null):(s.scores?.[c.id]??null);
+      if(val===null||val===undefined)return null;
+      const x=PAD.left+gW*(allSnaps.length<2?0.5:i/(allSnaps.length-1));
+      const norm=mode==='rank'?(yMax-val)/(yMax-yMin||1):(val-yMin)/(yMax-yMin||1);
+      const y=PAD.top+gH*(1-Math.max(0,Math.min(1,norm)));
+      return{x,y,val};
+    });
+    const valid=points.filter(Boolean);
+    if(!valid.length)return;
+    ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.lineJoin='round';
+    ctx.beginPath();let started=false;
+    points.forEach(p=>{if(!p)return;if(!started){ctx.moveTo(p.x,p.y);started=true;}else ctx.lineTo(p.x,p.y);});
+    ctx.stroke();
+    valid.forEach(p=>{
+      ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='rgba(224,244,255,.9)';ctx.font='bold 10px DM Mono,monospace';ctx.textAlign='center';
+      ctx.fillText(mode==='rank'?'#'+p.val:p.val,p.x,p.y-10);
+    });
+  });
+  // Legend
+  legend.innerHTML=visibleCoaches.map((c,ci)=>{
+    const color=PROG_COLORS[ci%PROG_COLORS.length];
+    const latest=allSnaps[allSnaps.length-1];
+    const prev=allSnaps.length>1?allSnaps[allSnaps.length-2]:null;
+    const curVal=mode==='rank'?latest.ranks?.[c.id]:latest.scores?.[c.id];
+    const prevVal=prev?(mode==='rank'?prev.ranks?.[c.id]:prev.scores?.[c.id]):null;
+    let arrow='';
+    if(curVal!=null&&prevVal!=null){
+      if(mode==='rank') arrow=curVal<prevVal?'<span style="color:#4ade80">▲</span>':curVal>prevVal?'<span style="color:#f87171">▼</span>':'<span style="color:var(--muted)">—</span>';
+      else arrow=curVal>prevVal?'<span style="color:#4ade80">▲</span>':curVal<prevVal?'<span style="color:#f87171">▼</span>':'<span style="color:var(--muted)">—</span>';
+    }
+    return `<div style="display:flex;align-items:center;gap:7px;background:rgba(14,30,55,.7);border:1px solid ${color}33;border-radius:8px;padding:5px 12px;font-size:.75rem">
+      <span style="width:14px;height:3px;background:${color};border-radius:2px;flex-shrink:0;display:inline-block"></span>
+      <span style="font-weight:700;color:${color}">${c.name}</span>
+      ${curVal!=null?`<span style="color:var(--muted);margin-left:2px">${mode==='rank'?'#'+curVal:curVal+'/100'}</span>${arrow}`:''}
+    </div>`;
+  }).join('');
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+function renderAll(){renderCoaches();renderSwimmers();renderCoachList();renderMeets();renderClubs();populateCoachDropdown();renderProgression();}
+const _loaded=loadData();
+if(!_loaded) saveData();
+renderAll();
+</script>
+</body>
+</html>
